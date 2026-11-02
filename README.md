@@ -1,144 +1,75 @@
-# Il Mazzo
+# La Pioche
 
-Italian flashcards in a single HTML file: nouns, regular and irregular verbs, adjectives and everyday phrases, with progress tracking, history notes and spoken Italian — and an illustrated story to read, built from the words you're learning. No server, no accounts, no build step — open `index.html` and play.
+French flashcards in a single HTML file — nouns for now, with progress tracking, history notes, spaced review and listening practice. *La pioche* is the pile you draw from in a card game.
+
+La Pioche is the French twin of [Il Mazzo](https://github.com/Nassim55/il-mazzo), the Italian game it was copied from in November 2026; the two now grow separately. It lives at https://nassim55.github.io/la-pioche/.
 
 ## Sections
 
 | Section | Items | What you practise |
 |---|---|---|
-| Sostantivi | 941 nouns | the noun with its definite article (*il pane, lo zaino, l'acqua*), in 23 themes — among them *Ristrutturazione*, 73 nouns for renovating the house |
-| Verbi regolari | 150 verbs | present-tense conjugations, or just the infinitive |
-| Verbi irregolari | 50 verbs | the most common verbs that are irregular in the present |
-| Mi piace | 116 sentences · 13 levels | verbs like *piacere*, drilled: natural English in, the Italian turned round out (*I like the beach* → *Mi piace la spiaggia*) |
-| Aggettivi | 200 adjectives | the dictionary form, or every gender and number |
-| Preposizioni | 224 phrases | fusion drills (*di + il libro* → *del libro*) and usage cards in 27 themes, six groups; a rule for every slip; the fusion table |
-| Frasi | 50 phrases | everyday expressions, with *tu* and *Lei* forms kept distinct |
-| Scrittura | 100 sentences | present-tense sentences built from the deck's own words, written in full |
-| Dialoghi | 6 scenes · 48 lines | everyday conversations in two voices: listen, answer three questions, then write each line from dictation |
-| Racconto | 3 chapters | *La casa di pietra*, an illustrated story to read, plus the 30 words it teaches |
+| Noms | 400 nouns | the noun with its definite article (*le pain, la maison, l'eau, le héros, les gens*), in 17 themes |
 
-Every card section works in three directions — English → Italian, Italian → English, and Listening (hear the Italian, type it) — and each direction keeps its own progress.
+More sections will follow one at a time, each built for French: verbs, adjectives, everyday phrases, sentences.
+
+Every card works in three directions — English → French, French → English, and Listening (hear the French, type it) — and each direction keeps its own progress.
 
 ## Features
 
-**The infinitive first.** In a conjugation round (English → Italian, or Listening), each verb starts with its infinitive: type it right before its forms begin — it counts for nothing, no score and no record, and a slip or *Salta* just asks for it to be typed. Then it stays on the card, above each form, until the next verb. *Prima l'infinito*, with the persons on the verb setup screens, turns it off (it's kept and synced with them). Not in Italian → English, where it would give the meaning away, nor in Ripasso, where each verb comes as a single form.
+**Checking French.** Capitals don't matter, and an apostrophe can be straight, curly or a space (*l'eau, l’eau, l eau*). The article does matter, and so does its elision: *maison* alone is wrong, and so is *la eau*. A missing accent is forgiven but never hidden — *la foret* counts, and the answer comes back as *la forêt* with the ê highlighted — while a wrong or extra accent is a mistake (*la forèt*). The cedilla and hyphens work the same way (*garcon*, *grand mere*), *oe* for *œ* is always fine (*le coeur*), and a few nouns accept another correct spelling (*la clef*, *le petit déjeuner*).
 
-**Conjugations in order.** In a conjugation round, each verb's forms come together, *io → tu → lui → noi → voi → loro*, while the verbs themselves come in random order — in every round: a fresh one, *Play all again*, *Practise the missed*, *Focus*, *A spasso*. A round cut short (*play just 20*) only ever cuts a verb at its end, and growing a round mid-way finishes the verbs in play before adding new ones, whole.
+**The gender behind *l'* and *les*.** *L'eau* and *les gens* don't show their gender, so the answer does: *l'eau (f.)*, *les gens (m.)*.
 
-**The present at a glance.** In *Verbi irregolari*, resting the mouse on a verb's tile (or tabbing to it, or a long press on a phone) opens a popout of its six present forms, with the ones that break the regular pattern highlighted: *vado, vai, va, vanno* but not *andiamo, andate*. Contracted infinitives are compared with the stem their present is built on — *proporre* on *propon-*, *produrre* on *produc-*, *dire* on *dic-*, *bere* on *bev-* — and the popout says so.
+**Why the article is wrong.** A wrong article gets its reason: *eau* starts with a vowel, so *le* or *la* becomes *l'*; the h of *héros* is aspirated, so there's no elision; *gens* is plural; *maison* is feminine.
 
-**A spasso — out and about, listen only.** Under *Start practising*, *🎧 A spasso* plays the same cards with nothing to type or say: each one is read aloud, the Italian and then the English, five times over (*Ripetizioni* changes the number; *Lento* slows the Italian), then the next card — and at the end of the deck it goes round again, reshuffled, for as long as it's left on. The English is tidied for speaking (*you all*, *he or she*), and anything in brackets — *(facts, how to)*, *(formal)* — is left out. Phones stop the browser's voice when the screen locks, so it keeps the screen awake while it plays, and *Blocca lo schermo* puts up a dark pocket lock that ignores taps until you hold to unlock; if the screen does go off, the card starts again when it's back. Nothing heard here changes your scores.
+**En balade — out and about, listen only.** Under *Start practising*, *🎧 En balade* plays the same cards with nothing to type or say: each one is read aloud, the French and then the English, five times over (*Répétitions* changes the number; *Lent* slows the French), then the next card — and at the end of the deck it goes round again, reshuffled, for as long as it's left on. The English is read without its brackets. *Verrouiller l'écran* covers the screen against pocket taps.
 
-**The grid shows your record.** In every section's pick grid, each word's tile is shaded by how often you get it wrong in the current direction — continuously, from olive (rarely wrong) through gold to terracotta (wrong half the time or more). The colour is faint while a word has had only a few tries and full from five, so one slip doesn't paint it red; words you haven't tried stay plain. Hover over a tile for the numbers (*Wrong 3 of 8 times — 38%*); a key above the grid explains the scale.
+**The grid shows your record.** In the pick grid, each noun's tile is shaded by how often you get it wrong in the current direction — olive for right, through gold, to terracotta — and more strongly the more you've tried it.
 
-**Parla — say it, don't just type it.** Wherever the answer is Italian (English → Italian, and Listen, where repeating what you hear is shadowing), a microphone at the right of the answer box (or *Shift+Enter*, so the keyboard never has to be left) listens in Italian; typing stays the main way, and plain Enter still checks. Words appear as you speak; if any of the recogniser's guesses is right it's a right answer, checked as leniently as typing, and marked *Said aloud*. If none is, nothing is marked: what was heard stays in the box to say again, fix, or check. The retype after a miss can be said too. Only in browsers that can listen (Chrome, Edge, Safari), and never while the app itself is speaking.
+**Parle — say it, don't just type it.** Wherever the answer is French (English → French, and Listening, where repeating what you hear is shadowing), the microphone in the answer box (or ⇧ Enter) listens in French. A right guess counts like a typed answer; anything else stays in the box to fix. If the browser is listening in English, it says how to switch it.
 
-**Nothing typed is never wrong; *Salta* is.** Pressing Enter on an empty answer box (most often by accident) just shakes the box and asks for an answer; nothing is shown and nothing is counted. To skip a card you don't know, press *Salta*, beside *Controlla*: it counts as wrong in every section, shows the answer, and then asks for it to be typed out like any miss.
+**Nothing typed is never wrong; *Passer* is.** An empty Enter just asks for an answer. *Passer* shows the answer and counts as a miss.
 
-**Typing it right after a miss.** After a wrong answer the answer box clears and the button reads *Riscrivi →*: the right answer has to be typed before the next card, as leniently checked as the answer itself (accents, capitals and punctuation forgiven). It's practice only: it changes neither the score nor the card's history or review schedule. In Italian → English, *I was right — count it* lifts it.
+**Typing it right after a miss.** After a wrong answer the box clears and the button reads *Réécris →*: the right answer has to be typed (checked as leniently as the answer itself) before the next card. It's practice: it changes neither the score nor the history.
 
-- **Ripasso del giorno** — spaced repetition across every section: every item you practise is scheduled, and the daily review brings back exactly what's due (see below)
+- **Révision du jour** — spaced repetition: every noun you practise is scheduled, and the daily review brings back exactly what's due (see below)
 - Themes, quick picks (Random, Weakest), hand-picking, and "the most common" by frequency
 - Deck size and Focus, to grow or narrow a round while playing
-- A history note on every item, plus your own word associations
-- Reference panels (verb endings, irregular patterns, adjective agreement, *tu* or *Lei*) and a *Da ripassare* list of your weakest items
+- History notes — where a word comes from, its English cousins, false friends and gender traps — plus your own word associations
 - Practise the cards you missed, as a filter on the round you just played
-- Spoken Italian using the device's own voices, and stress-marked pronunciation for verbs
-- **Choose the persons** for the verb sections: under *Practice mode*, pick any of io, tu, lui / lei, noi, voi, loro (or *all*, *singular*, *plural*). Rounds, Ripasso del giorno and chapter practice then ask only those; each verb section keeps its own choice, and it syncs with your progress.
-- **Deck size slider** during a round, from 1 card to the whole selection. After *Practise the ones I missed* (or a mid-game Focus) it becomes two sliders — how many of the missed cards, and how many of the rest to mix back in. Growing adds unplayed cards (the rest in the round's order: random, or the next most common); shrinking trims unplayed cards from the end, so cards already played stay counted.
+- Spoken French in the device's own voices, France's first
 - Back up and restore all progress to a file
-- **Dialoghi** — everyday scenes to listen to, understand and write from dictation (see below)
-- **Racconto** — a story to read, in which every word links to its card (see below)
 
-## Ripasso del giorno
+## Révision du jour
 
-Every item you answer gets a review date, separately for each direction. A correct answer moves it up a box and pushes it further out — 1, 2, 4, 8, 16, 32, then 64 days — while a wrong answer brings it back tomorrow. Only the first correct answer of the day moves an item up, so six right conjugations of one verb count once. Progress from before the schedule existed seeds it: weak items come due straight away and solid ones are spread over the following days.
-
-The strip at the top of the setup screen shows what's due today in the chosen direction, by section. **Start** mixes it all into one round (up to 30 cards to begin with; Deck size reaches the rest), each card labelled with its section and checked by that section's rules. Schedules are part of backups, and resetting a section's progress clears its schedule.
-
-## Mi piace: verbs that work backwards
-
-In *mi piace il caffè* the coffee is the subject — it does the pleasing — and the person who likes it goes in the pronoun. Scrittura shows these sentences word for word; this section drills the real skill: each card gives the **natural English** (*My back hurts*, *Do they like us?*) and you write the Italian the other way round. The word for word shows after you answer, and *Why* explains any slip — the verb agreeing with the thing (*piacciono* for *le fragole*), an activity counting as singular, the pronoun for the person, a person as the subject (*ci piaci*).
-
-Thirteen levels: *piace* or *piacciono*; formal *Le*; liking to do things; people by name (*a Marco*, *ai bambini*); negatives and questions; *a me sì, a te no*; *mancare*; *servire* and *bastare*; *interessare* and *importare*; *fare male*; *sembrare*; people as the subject (*mi piaci*, *ti manco?*); and fixed expressions (*ti va?*, *tocca a te*, *ti conviene*). The stressed form (*A me piace…*) and the thing first (*La spiaggia mi piace*) are accepted too. The *Come piacere* chart — on the setup screen and behind ▦ in a round — gives the pronouns (*a me → mi* … *a loro → gli*), the agreement rule and the verbs. No sentence repeats one of Scrittura's.
-
-## Scrittura: writing whole sentences
-
-A hundred present-tense sentences, built only from the deck's own nouns, verbs, adjectives and phrases (plus small words: articles, prepositions, pronouns, numbers). You see the English and write the whole Italian sentence — every article, every preposition; nothing is filled in for you. The English follows the Italian word for word, in its order — understandable, if not always proper English: no *do* or *don't* (*You eat the meat?*, *I not eat the meat*), the verb before the subject where the Italian has it (*When leaves the train?*), only the Italian's own articles and prepositions (*I work in office*, *The my sisters*, *I wait the bus*), adjectives after the noun (*a house big*). It shows how Italians build the sentence. Where the word-for-word version reads oddly, the card also shows the natural English underneath (English → Italian only, so it never gives the answer away), and the natural English counts when translating into English.
-
-- **Six levels:** *Io e tu*, *Lui e lei*, *Noi, voi, loro*, *Com'è?* (describing things), *Dove e quando*, *No e domande*.
-- **What counts:** the subject pronoun is optional, as in Italian (*Bevo un caffè* or *Io bevo un caffè*); punctuation, accents and capitals don't matter; natural variants are listed (*nel giardino* / *in giardino*, *Stasera mangiamo la pizza*). English "you" always says whether it means *tu* or *voi*.
-- **Word-by-word feedback:** a wrong answer is lined up with the closest correct version — the wrong or extra words struck through in yours, the missing ones highlighted in the correct one (a missing *l'* shows as a missing *l'*).
-- **Mi piace — verbs like piacere (70 sentences):** the thing liked is the subject and the person goes in the pronoun — word for word, *Mi piace il caffè* is *To me pleases the coffee*. Five levels: *piace* or *piacciono*; every person (*ti, gli, le, ci, vi, a mio fratello*, *anche a me*); the verbs that work the same (*mancare, servire, interessare, sembrare, dispiacere, fare male, andare, restare*); people as the subject (*mi piaci, ti manco*); and *Al contrario*, where the prompt is the natural English and the word for word comes after.
-- **Sentence types:** at the top of the setup, choose *Presente semplice*, *Mi piace*, or both (one always stays on). The levels, the grid, every pick button and Ripasso follow the choice, which syncs.
-- **Why it's wrong:** under the comparison, the rule behind each mistake — an adjective agreeing with its noun (*bella*: it agrees with *la città*, feminine singular), a verb with its subject (*beve*: the subject is *il cane*, the lui/lei form, with all six forms), the article for the noun (*l'* before a vowel), a preposition joining its article (*sul* = *su* + *il*), a noun's number, where *non* goes, word order, spelling.
-- Sentences come back in Ripasso del giorno and sync like everything else.
-
-## Dialoghi: *Scene di vita*
-
-Six short conversations from everyday life: at the bar, the market, the station in Varese, a restaurant, with Rosa the neighbour outside the stone house, and with Giovanni about the roof. Every word is in the deck (the present tense, plus phrases from *Frasi*). Each scene has three steps on one page:
-
-- **Ascolta.** The whole scene plays in two different Italian voices (with only one voice on the device, the second speaker is the same voice pitched lower), at normal speed or *Lento*. The text starts hidden — listen first — with each line a bar that lights up as it's spoken. Tap a line to hear it again; *Mostra il testo* shows the Italian, then *Mostra l'inglese* the natural English with the word for word under it. Hearing the scene to the end marks it *Ascoltato*.
-- **Capisci?** Three questions about what was said; each answer quotes the line that gives it. The best score is kept.
-- **Dettato.** The scene's lines, in order, through the card engine: hear each line and write it (or say it), with Scrittura's comparison, *Why*, the retype and *Salta*. *Traduci dall'inglese* writes them from the word-for-word English instead ("(formal)" and "(you all)" mark *Lei* and *voi*). Every line is a card, so it comes back in Ripasso del giorno.
-
-Each scene card on the home page shows its steps: *Ascoltato*, the *Domande* score and *Dettato x/8*. Without an Italian voice, the text is shown and the dictation becomes translating from the English.
-
-## Racconto: *La casa di pietra*
-
-A diary in Italian, in the present tense, set in Boarezzo in the Valganna. The narrator is you: you arrive with the key to an old stone house, and a letter from 1923 turns up behind a loose stone. About 70% of the words come from the deck; the rest are taught as you read.
-
-- **The map** charts the journey from Malpensa up the valley, with a pin for each chapter. Finishing a chapter's questions stamps it *Letto*.
-- **Every word can be tapped.** A word from the deck shows its card's meaning, its dictionary form (and person, for a verb), its history note and whether you know it yet; the story's own words have notes too; small words like *di* or *alla* just show a meaning. **+ Ripasso** puts the word on today's review.
-- **Underlines show where you stand:** none for words you know (box 2 or above in either direction), dotted for words you're learning, dashed for deck words you haven't practised, wavy for words the story teaches.
-- **The readiness meter** on each chapter is the share of its words you already know.
-- **Listening and translation:** ▶ reads a sentence aloud, *Ascolta il capitolo* reads the whole chapter with each sentence highlighted, and EN reveals a sentence's English.
-- **After each chapter:** three questions, and *Trova la parola* — find the word that means "key" by tapping it in the text. *Esercitati* then practises every word in the chapter as one mixed round.
-- The story's own words are a section of their own (drilled like phrases), so they come back in Ripasso del giorno with everything else.
-
-### Writing a chapter
-
-Chapters live in `STORY_CHAPTERS` in `index.html`; words the deck doesn't have live in `STORY_WORDS`, each with a meaning and a history note. A chapter is:
-
-```js
-{ id: 'c4', title: 'Domenica', place: 'Boarezzo', art: 'c4',
-  paragraphs: [[['Italian sentence.', 'Its English.'], …], …],
-  senses: { case: 'nouns:casa' },          // plurals, and words that could be read two ways
-  glossary: { camino: 'camino' },          // words (or phrases) taught from STORY_WORDS
-  context: { paese: 'the village — …' },   // optional: what a word means here
-  questions: [{ q: '…?', options: ['right', 'wrong', 'wrong'], answer: 0 }, …,
-              { find: 'nouns:chiave', q: 'Trova la parola che vuol dire «key».' }] }
-```
-
-It also needs a picture (a drawing function in `STORY_ART`) and a pin position in `STORY_PINS`. Each word in the text is matched in this order: the chapter's `senses`, its `glossary`, names, then the deck — after an article or preposition a noun is preferred, so *la porta* is the door rather than *porta*, "carries". The start-up check warns about any word left unexplained, a sense or glossary entry pointing nowhere, or a *Trova la parola* word missing from the text, and the tests fail on any warning.
+Every noun you answer gets a review date, separately for each direction. A correct answer moves it up a box and pushes it further out — 1, 2, 4, 8, 16, 32, then 64 days; a wrong answer brings it back tomorrow. The strip at the top of the setup screen shows what's due today in the chosen direction. **Start** plays it as one round (up to 30 cards at first; Deck size reaches the rest).
 
 ## Syncing across devices
 
-Progress syncs between devices through a small API of Il Mazzo's own — a Cloudflare Worker with a D1 (SQLite) database, both on Cloudflare's free plan. The browser stays the working copy, so the app stays instant and works offline; the server holds the latest agreed copy.
+**Not switched on yet.** La Pioche will sync through a small API of its own — a Cloudflare Worker with a D1 database, as Il Mazzo does, but a separate one, so the two games' progress never mixes. Until it's deployed the app makes no requests and shows no sign-in: progress stays on each device, and each device's progress merges in at its first sign-in later (for a word practised on two devices, the larger count is kept).
 
-**How copies merge.** Merging is three-way: each device remembers the copy it last agreed with the server, so changes on each side since then can be told apart and both kept. Answer counts add up (*casa* seen 3 times, then twice more on one laptop and once on the other, is 6); review schedules keep the most recently answered record; associations keep whichever side changed; a chapter read on either device counts. On a device's first sync, when there's no shared copy yet, the larger count is kept instead, so the same backup restored on two devices isn't counted twice. A reset or a restore raises that store's *epoch* and wins outright. Voice, speed, last section and review direction stay per device.
+**To switch it on:**
 
-**The server** (`worker/`) stores each progress store's JSON and a version number. A save names the version it was based on and is refused if another device saved in between — that device fetches, merges again and retries — so two devices saving at once can't overwrite each other.
+1. In Cloudflare, create a D1 database called `la-pioche` (Storage & databases → D1, or `npx wrangler d1 create la-pioche`) and copy its ID.
+2. In this repository's Settings → Secrets and variables → Actions, add the secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` and `ALLOWED_EMAILS` (the same values as Il Mazzo's), and the variables `D1_DATABASE_ID` (the new database's ID) and `GOOGLE_CLIENT_ID`. Il Mazzo's Google client should work as it is, since both games are on `https://nassim55.github.io`; check its authorised JavaScript origins in the Google Cloud console.
+3. Push to `main`: the `deploy-sync` job applies the migrations and deploys the Worker as `la-pioche-sync` (on the account's `workers.dev` subdomain — don't rename that subdomain, as Il Mazzo's sync depends on it).
+4. Then ask for sync to be switched on: `SYNC_URL` in `index.html` gets the Worker's address, and the `sync-off` test changes with it.
 
-**Signing in.** Each device signs in once with Google. The server checks the Google ID token's signature against Google's public keys, that it was issued for this app and hasn't expired, and that its verified email is on the allow-list; then it issues a year-long session (only its hash is stored). Each Google account has its own progress. Another person's Google account, or a forged token, gets "This Il Mazzo is private".
-
-**Using it.** Sign in with Google once on each device; after that there's nothing to see. It syncs when the app opens, when the setup screen comes back after practice, and when the tab is hidden — never in the middle of a round — and offline it simply catches up later. A device's existing progress is merged in at its first sign-in. If a session ends, the sign-in screen comes back and nothing on the device is lost. Opened offline before ever signing in, the app works from the device's own copy and offers sign-in later. The site itself stays public (GitHub Pages); the progress is private to your account.
-
-**To deploy the API**, the repository needs, in Settings → Secrets and variables → Actions: the secrets `CLOUDFLARE_API_TOKEN` (the *Edit Cloudflare Workers* template plus *Account · D1 · Edit*), `CLOUDFLARE_ACCOUNT_ID` and `ALLOWED_EMAILS` (the Google address(es) allowed to sign in, comma-separated — a secret, so it never appears in this public repo's logs), and the variables `D1_DATABASE_ID` (the D1 database named `il-mazzo`) and `GOOGLE_CLIENT_ID` (a *Web application* OAuth client in Google Cloud whose authorised JavaScript origin is `https://nassim55.github.io`). The workflow then applies the database migrations and deploys the Worker after every successful test run on `main`.
+After that it works as in Il Mazzo: sign in with Google once on each device, and syncing happens by itself, with nothing to see.
 
 ## Your progress
 
-Progress, associations and voice settings are saved in the browser's local storage — never in this repository. Each browser keeps its own copy, and so does each address the page is opened from, so use **back up** and **restore** on the setup screen to move progress between them (for example, from a local copy to GitHub Pages).
+Progress, associations and voice settings are saved in the browser's local storage — never in this repository. Each browser keeps its own copy, and so does each address the page is opened from. La Pioche and Il Mazzo are on the same site, `nassim55.github.io`, so they share that storage: every one of La Pioche's keys starts with `pioche-`, and neither game ever touches the other's progress. A backup is a file of your own; restoring checks that it's a La Pioche backup.
 
 ## Using it
 
 - **Locally:** clone or download the repository and open `index.html` in a browser.
-- **Online:** in the repository's Settings → Pages, set **Source** to **GitHub Actions**. The workflow then publishes `main` after every successful test run, at `https://<username>.github.io/<repository>/`. On a free GitHub plan, Pages needs the repository to be public.
-- **Spoken Italian** needs an Italian voice on the device. On a Mac: System Settings → Accessibility → Spoken Content → ⓘ next to System voice → Italiano, then download a Premium or Enhanced voice.
+- **Online:** in the repository's Settings → Pages, set **Source** to **GitHub Actions**. The workflow then publishes `main` after every successful test run.
+- **Spoken French** needs a French voice on the device. On a Mac: System Settings → Accessibility → Spoken Content → ⓘ next to System voice → Français, then download an Enhanced or Premium voice from France. A voice from France is chosen before a Canadian one.
 
 ## Development
 
-Everything — markup, styles, data and code — lives in `index.html`. The tests load it in [jsdom](https://github.com/jsdom/jsdom) and play it the way a person would: clicking, typing answers and checking what appears.
+Everything — markup, styles, data and code — lives in `index.html`. The tests load it in [jsdom](https://github.com/jsdom/jsdom) and play it the way a person would: picking nouns, answering, skipping, reloading.
 
 ```sh
 npm install
@@ -153,20 +84,16 @@ Node 20 or later is required.
 
 `.github/workflows/tests.yml` runs the full suite on every push, on any branch:
 
-- **A push to `main`** (for example from Claude Code on a laptop) is tested, then published to GitHub Pages.
-- **A push to a `claude/…` branch** (Claude Code on the web works on these) is tested; if everything passes, it's merged into `main` automatically, and `main` is re-tested and published.
-- **Anything that fails** stays where it is — a red cross on the commit, and the live site untouched. A merge that conflicts with `main` also stops there.
+- **A push to `main`** is tested, then published to GitHub Pages.
+- **A push to a `claude/…` branch** (Claude Code on the web works on these) is tested; if everything passes, it's merged into `main` automatically and published.
+- **Anything that fails** stays where it is — a red cross on the commit, and the live site untouched.
 
 ### What the tests cover
 
-- **Against the originals:** `regular-verbs-vs-original` and `adjectives-vs-original` load the original standalone games from `tests/fixtures/` side by side with Il Mazzo and compare every card, answer verdict, ranking and saved-progress format — over 23,000 comparisons — so the ports can't quietly drift.
-- **Each section:** `nouns-core`, `nouns-features`, `regular-verbs`, `regular-verbs-additions`, `irregular-verbs`, `adjectives`, `phrases`.
-- **Sentences:** `sentences` — every word in the deck, every verb a present-tense form, writing in full (pronoun optional, articles required), the word-by-word feedback, Italian → English, Ripasso and sync.
-- **Deck size:** `deck-sliders` — one slider, then two after missing some: live numbers, growing and shrinking each group, played cards kept, never an empty deck, game keys left alone.
-- **Verb persons:** `verb-persons` — choosing persons, card counts, rounds and Ripasso asking only those, never none, per-section choices, saving, backups and sync.
-- **The story:** `story` — every word explained and read the right way (*porta* the door, *legge* "reads"), the reader, word cards, + Ripasso, reading aloud, the questions and stamp, chapter practice, and backups.
-- **Sync and sign-in:** `sync-merge` (what syncs, the merge rules, epochs, and two devices syncing through a stand-in server), `sync-client` (signing in with Google, then recording automatically against the real Worker: who gets in, the move from the old built-in key, two devices syncing at the same instant, an answer saved mid-sync, offline, sessions ending) and `sync-worker` (sign-in and every way a token can be wrong — forged, unsigned, unknown key, wrong app, wrong issuer, expired, unverified, not on the allow-list — plus sessions, the version check including two simultaneous saves, validation, and deleting). `tests/google-fixture.js` plays Google with a real RSA key pair; `tests/d1-fixture.js` is D1 on Node's built-in SQLite.
-- **Shared features:** `ripasso` (the schedule, seeding, the mixed review — with the clock under test control), `audio`, `practise-missed`, `weakest-panel`, `backup-restore`, `grid-order`, `verb-notes`, `start-begin-labels`.
+- **The nouns:** `nouns-core` (the data: 400 nouns, no duplicates, every article right for its gender and first letter, aspirated h, plurals, the ranking, notes and associations), `nouns-features` (the screens: labels, the gender behind *l'* and *les*, why an article is wrong, accents forgiven and shown), `checking` (every rule for checking French).
+- **Storage:** `storage-keys` — every key starts with `pioche-`, and Il Mazzo's keys on the same site are never read or changed; `backup-restore`.
+- **Sync:** `sync-off` (nothing at all while there's no server), `sync-merge` (what syncs, the merge rules, epochs, two devices through a stand-in), `sync-client` (signing in with Google and recording, against the real Worker code), `sync-worker` (the API).
+- **Shared features:** `ripasso` (Révision du jour, with the clock under test control), `audio`, `passive` (En balade), `parla` (Parle), `practise-missed`, `retype`, `shading`, `deck-sliders`.
 
 ## Project layout
 
@@ -178,12 +105,9 @@ tests/
   run-all.js                 runs every suite; exits non-zero if any fails
   harness.js                 loads index.html in jsdom, plus small helpers
   *.test.js                  the suites
-  fixtures/                  the original verb and adjective games, and the list of added verbs
 .github/workflows/tests.yml  continuous integration
 ```
 
 ## Data
 
-Frequency rankings combine written Italian (wordfreq), spoken Italian (OpenSubtitles 2018 word counts) and the Italian Universal Dependencies treebanks, which are used to count only true noun, verb or adjective uses of each form. The phrases were chosen by cross-checking native teachers' and language publishers' lists of everyday Italian with research on spoken Italian. Notes on method sit beside each data block in `index.html`.
-
-**Preposizioni** rebuilds the old standalone *preposizioni* game inside Il Mazzo, with everything it lacked: Ripasso, sync, stats, audio and the in-round controls. It has 224 phrases in 27 themes, under the old game's six group headings, and every word is from the deck. Fusion drills follow the direction like every card, and each starts with one easy verb that goes with its preposition (*parlo di*, *vado a*, *vengo da*, *è in*, *è su*). English → Italian shows *I talk about the book* and asks for *Parlo del libro*; after you answer come the pieces (*di + il libro → del libro*) and the sentence word for word (*I speak of-the book*). Each fusion drill is a pair, the singular and then straight after its plural (*Parlo del libro*, then *Parlo dei libri*), played as two cards of one item like a verb's persons. The setup lists the singular only; a *Singolare · Plurale* toggle at the top (both on by default, synced) chooses which to play, and Ripasso deals the whole pair. *(m.)* and *(f.)* mark English that could be either (*to the friend's*). Usage cards give natural English (a word-for-word prompt would give the preposition away) and show the Italian word for word afterwards: *aspetto l'autobus*, *I wait the bus*. A wrong answer gets the same comparison and **Why** as Scrittura, plus each theme's rule when the preposition itself is wrong, such as *cities take a*, *no preposition in Italian*, or *da with the present tense*. A side panel holds the 35 joined forms, and the same chart opens during a round from the *▦ Le articolate* button. Every section with a chart has this button (*Le desinenze*, *Gli irregolari*, *Le concordanze*, *In pratica*), and in Ripasso it follows each card's own section. The old game's 16 patterns are all here with at least as many cards, including 22 each for *di* and *da* + article; new themes cover transport, place words (*vicino a*), material, *some* (*del pane*), *da* + a verb, *da* and *tra* + time, verbs with no preposition, and *con*, *per* and *tra*. The adjectives' 101–150 are the 50 most common adjectives not in the original game, ranked like the verbs: a geometric-mean blend of written (wordfreq) and spoken (OpenSubtitles) frequency, weighted by adjective use in the UD treebanks. The story and its illustrations are original to Il Mazzo.
+The deck's frequency ranking comes from [wordfreq](https://github.com/rspeer/wordfreq)'s French data (itself a blend of Wikipedia, subtitles, news, books and the web), weighted by how often each form is really a noun in the French [Universal Dependencies](https://universaldependencies.org/) treebanks — GSD, Sequoia, ParTUT, PUD and FQB for written French, Rhapsodie and ParisStories for spoken — so that *été* (summer, but also "been") or *pas* (step, but also "not") don't rank higher than they should. Hyphenated nouns, which wordfreq splits in two, are scored from the OpenSubtitles 2018 counts in [FrequencyWords](https://github.com/hermitdave/FrequencyWords), scaled to match. The first 300 nouns are the most common; the other 100 are everyday nouns from Il Mazzo's concrete themes. The notes beside each data block in `index.html` give the details.

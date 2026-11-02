@@ -1,6 +1,6 @@
 {
-  "name": "il-mazzo-sync",
+  "name": "la-pioche-sync",
   "private": true,
   "type": "module",
-  "description": "Il Mazzo's sync API: a Cloudflare Worker storing each device group's progress in D1"
+  "description": "La Pioche's sync API: a Cloudflare Worker storing each device group's progress in D1"
 }

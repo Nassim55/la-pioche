@@ -8,7 +8,7 @@ const el = id => d.getElementById(id);
 const label = id => el(`${id}-value`).textContent;
 const set = (id, v, type = 'change') => { el(id).value = String(v); el(id).dispatchEvent(new w.Event(type)); };
 const answer = (noun, raw) => { ev(`index = deck.findIndex(c => c.noun === ${JSON.stringify(noun)}); render();`); el('answer').value = raw; el('submit').click(); };
-const nouns = ['pane', 'casa', 'libro', 'acqua', 'gatto', 'cane'];
+const nouns = ['pain', 'maison', 'livre', 'eau', 'chat', 'chien'];
 
 // ---- One slider ----
 ev(`selectedNouns = new Set(${JSON.stringify(nouns)}); capValue = '4'; updateReadout();`);
@@ -26,8 +26,8 @@ ok(ev('deck.length') === 2 && label('game-trim-input') === '2 / 6', 'and down to
 set('game-trim-input', 6);
 
 // ---- Two sliders after missing some ----
-for (const n of ['pane', 'casa', 'libro']) answer(n, 'sbagliato');   // three misses (an empty answer wouldn't count)
-for (const n of ['acqua', 'gatto', 'cane']) answer(n, ev(`deck.find(c => c.noun === ${JSON.stringify(n)}).italian`));
+for (const n of ['pain', 'maison', 'livre']) answer(n, 'faux');   // three misses (an empty answer wouldn't count)
+for (const n of ['eau', 'chat', 'chien']) answer(n, ev(`deck.find(c => c.noun === ${JSON.stringify(n)}).italian`));
 ev('index = deck.length; render();');
 el('practise-missed').click();
 const missedKeys = ev('sessionMaxDeck.map(c => c.key)');

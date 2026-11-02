@@ -1,22 +1,62 @@
-// Recreated: data integrity + associations/notes suite (e2e.js) + English checker over all prompts
+// The French deck: its data, how answers are checked, notes and associations
 const { boot, ok, done } = require('./harness');
 let { w, d, ev, key, warns, errors } = boot();
 ok(warns.length === 0 && errors.length === 0, 'loads with no validator warnings or errors');
-ok(ev('subject') === 'nouns' && ev('nounData.length') === 941, 'opens on nouns with 941 nouns');
+ok(ev('subject') === 'nouns' && ev('nounData.length') === 400, 'opens on Noms with 400 nouns');
 const keys = ev('nounData.map(n => n.noun)');
-ok(new Set(keys).size === 941 && new Set(ev('nounData.map(n => n.en)')).size === 941 && new Set(ev('nounData.map(n => n.it)')).size === 941, 'no duplicate keys, English prompts or Italian forms');
+ok(new Set(keys).size === 400 && new Set(ev('nounData.map(n => n.en.toLowerCase())')).size === 400 && new Set(ev('nounData.map(n => n.it)')).size === 400, 'no duplicate keys, English prompts or French forms');
 const themed = new Set(ev('THEMES.flatMap(t => t.nouns)'));
 ok(keys.every(k => themed.has(k)) && [...themed].every(k => keys.includes(k)), 'every noun themed, no unknown theme keys');
-ok(ev('FREQUENCY_ORDER.length') === 941 && keys.every(k => ev(`Number.isFinite(rankOf(${JSON.stringify(k)}))`)), 'every noun ranked');
+ok(ev('FREQUENCY_ORDER.length') === 400 && keys.every(k => ev(`Number.isFinite(rankOf(${JSON.stringify(k)}))`)), 'every noun ranked');
+ok(JSON.stringify(ev('NOUN_FREQUENCY_ORDER.slice(0, 5)')) === JSON.stringify(['an', 'temps', 'jour', 'fait', 'fois']), `the most common first: ${ev('NOUN_FREQUENCY_ORDER.slice(0, 5).join(", ")')}`);
+const rank = k => ev(`NOUN_FREQUENCY_ORDER.indexOf(${JSON.stringify(k)})`);
+ok(rank('maison') < rank('voiture') && rank('voiture') < rank('chien') && rank('chien') < rank('fromage') && rank('fromage') < rank('hibou'),
+   'ranked by one score: la maison, la voiture, le chien, le fromage, le hibou');
+ok(['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche', 'été', 'hiver', 'printemps', 'automne', 'pain', 'fromage', 'chemise', 'chien', 'gare'].every(k => keys.includes(k)),
+   'the everyday nouns are there too: the days, the seasons, bread, cheese, the shirt, the dog, the station');
 const fails = ev('nounData.filter(n => !checkEnglish(n.en, { english: n.en }).correct || !checkEnglish(n.en.replace(/\\([^)]*\\)/g, "").replace(/^the /i, "").trim(), { english: n.en }).correct).map(n => n.en)');
-ok(fails.length === 0, `English checker accepts all 941 prompts (${fails.slice(0, 3).join(', ')})`);
-ok(ev("checkAnswer('l amico', { italian: \"l'amico\", noun: 'amico' }).correct") && ev("checkAnswer('la pane', { italian: 'il pane', noun: 'pane' }).reason") === 'wrong-article'
-   && ev("checkAnswer('pane', { italian: 'il pane', noun: 'pane' }).reason") === 'missing-article', 'article checking: apostrophes, wrong article, missing article');
+ok(fails.length === 0, `English checker accepts all 400 prompts (${fails.slice(0, 3).join(', ')})`);
 
-// --- associations & notes (former e2e.js) ---
-ev("selectedNouns = new Set(['pane', 'pomodoro']); updateReadout();");
+// ---- Articles, genders, plurals ----
+const wrongArticle = ev(`NOUN_ITEMS.filter(n => {
+  const m = n.it.match(/^(le |la |les |l')(.+)$/);
+  if (!m) return true;
+  const art = m[1].trim(), word = m[2];
+  if (art === 'les') return n.pl !== word;
+  const elide = /^[aàâäeéèêëiîïoôöuùûüœæ]/.test(word) || (/^h/.test(word) && !n.aspH);
+  return elide ? art !== "l'" : art !== (n.g === 'f' ? 'la' : 'le');
+}).map(n => n.it)`);
+ok(wrongArticle.length === 0, `every article fits its noun: l' before a vowel or a mute h, le or la by gender otherwise, les for plural-only nouns${wrongArticle.length ? ': ' + wrongArticle.join(', ') : ''}`);
+const asp = ev('NOUN_ITEMS.filter(n => n.aspH).map(n => n.it)').sort();
+ok(JSON.stringify(asp) === JSON.stringify(['la hache', 'la honte', 'le haricot', 'le hasard', 'le haut', 'le hibou', 'le héros']), `aspirated h marked: ${asp.join(', ')}`);
+ok(ev(`NOUN_ITEMS.filter(n => /^h/.test(n.noun) && !n.aspH).every(n => n.it.startsWith("l'"))`) && ev(`['homme', 'heure', 'hôpital', 'hiver', 'histoire', 'hôtel'].every(k => NOUN_ITEMS.some(n => n.noun === k))`),
+   "every other h is mute and elides: l'homme, l'heure, l'hôpital, l'hiver");
+const g = k => ev(`NOUN_ITEMS.find(n => n.noun === ${JSON.stringify(k)}).g`);
+ok(g('côté') === 'm' && g('été') === 'm' && g('musée') === 'm' && g('plage') === 'f' && g('image') === 'f' && g('page') === 'f' && g('personne') === 'f' && g('légume') === 'm' && g('problème') === 'm' && g('erreur') === 'f' && g('bébé') === 'm',
+   'the genders that catch people out: le côté, l\'été, le musée, la plage, l\'image, la page, la personne, le légume, le problème, l\'erreur, le bébé');
+const note = k => ev(`NOUN_ITEMS.find(n => n.noun === ${JSON.stringify(k)}).note || ''`);
+ok(/-tion/.test(note('question')) && /-té/.test(note('côté')) && /-ment/.test(note('gouvernement')) && /-age/.test(note('image')) && /lost s/.test(note('forêt')) && /False friend/.test(note('chemise')),
+   'notes carry the gender patterns (-tion, -té, -ment, -age), the circumflex for a lost s, and the false friends');
+const pl = k => ev(`NOUN_ITEMS.find(n => n.noun === ${JSON.stringify(k)}).pl`);
+ok(pl('œil') === 'yeux' && pl('monsieur') === 'messieurs' && pl('travail') === 'travaux' && pl('ciel') === 'cieux' && pl('cheveu') === 'cheveux' && pl('hibou') === 'hiboux' && pl('grand-mère') === 'grands-mères' && pl('argent') === null,
+   'plurals are spelled out, irregular ones included: yeux, messieurs, travaux, cieux, cheveux, hiboux, grands-mères (none for l\'argent)');
+const odd = ev(`NOUN_ITEMS.filter(n => n.pl && !/^les /.test(n.it) && !/[- ]/.test(n.noun)).filter(n => {
+  const s = n.noun, p = n.pl;
+  if (/[sxz]$/.test(s)) return p !== s;
+  if (/eau$/.test(s)) return p !== s + 'x';
+  if (/al$/.test(s)) return p !== s.slice(0, -2) + 'aux';
+  return false;
+}).map(n => n.noun + '/' + n.pl)`);
+ok(odd.length === 0, `plurals follow the patterns: -s, -x, -z unchanged, -eau adds x, -al becomes -aux${odd.length ? ': ' + odd.join(', ') : ''}`);
+const c = k => `cardsForItem(NOUN_ITEMS.find(n => n.noun === ${JSON.stringify(k)}))[0]`;
+ok(ev(`checkAnswer('l eau', ${c('eau')}).correct`) && ev(`checkAnswer("L'EAU", ${c('eau')}).correct`) && ev(`checkAnswer('la eau', ${c('eau')}).reason`) === 'wrong-article'
+   && ev(`checkAnswer('maison', ${c('maison')}).reason`) === 'missing-article' && ev(`checkAnswer('le maison', ${c('maison')}).reason`) === 'wrong-article',
+   'article checking: apostrophes and capitals forgiven; a missing article, a wrong one and a missed elision caught');
+
+// ---- Associations and notes ----
+ev("selectedNouns = new Set(['pain', 'fromage']); updateReadout();");
 d.getElementById('start-btn').click();
-ev("deck.sort((a, b) => (a.noun === 'pane' ? -1 : 1)); render();");
+ev("deck.sort((a, b) => (a.noun === 'pain' ? -1 : 1)); render();");
 ok(d.getElementById('prompt').textContent === 'the bread', 'card 1 prompt renders');
 let card = ev('deck[0]');
 d.getElementById('answer').value = card.italian; d.getElementById('submit').click();
@@ -25,84 +65,33 @@ ok(fb.className.includes('correct') && !!fb.querySelector('.feedback-note') && !
 d.getElementById('assoc-edit').click();
 const input = d.getElementById('assoc-input'); input.value = 'companion <shared bread>'; key(input, 'Enter');
 ok(ev('index') === 0, 'Enter in the association box saves without advancing');
-ok(JSON.parse(w.localStorage.getItem('sostantivi-assoc-v1')).pane === 'companion <shared bread>', 'association saved under the noun key');
+ok(JSON.parse(w.localStorage.getItem('pioche-noms-assoc-v1')).pain === 'companion <shared bread>', 'association saved under the noun key');
 ok(d.querySelector('.assoc-text').textContent === 'companion <shared bread>', 'association shown, HTML-escaped');
 d.getElementById('assoc-edit').click(); d.getElementById('assoc-input').value = 'x'; key(d.getElementById('assoc-input'), 'Escape');
 ok(d.querySelector('.assoc-text').textContent === 'companion <shared bread>', 'Escape cancels an edit');
 key(d.body, 'Enter');
 ok(ev('index') === 1, 'Enter moves to the next card');
-d.getElementById('answer').value = 'qualcosa'; d.getElementById('submit').click();
+d.getElementById('answer').value = 'quelque chose'; d.getElementById('submit').click();
 fb = d.getElementById('feedback');
 ok(fb.className.includes('incorrect') && !!fb.querySelector('.feedback-note') && !!d.getElementById('assoc'), 'wrong answer: note + association area');
-ok(!d.getElementById('answer').disabled && d.getElementById('answer').value === '' && d.getElementById('submit').textContent === 'Riscrivi →', 'after a miss the box clears for the right answer');
-d.getElementById('answer').value = ev('deck[index].italian'); key(d.body, 'Enter');   // typed right: on to the end
+ok(!d.getElementById('answer').disabled && d.getElementById('answer').value === '' && d.getElementById('submit').textContent === 'Réécris →', 'after a miss the box clears for the right answer');
+d.getElementById('answer').value = ev('deck[index].italian'); key(d.body, 'Enter');
 d.getElementById('play-again').click();
-ev(`index = deck.findIndex(c => c.noun === 'pane'); render();`);
+ev(`index = deck.findIndex(c => c.noun === 'pain'); render();`);
 ok(!d.querySelector('.card').textContent.includes('companion'), 'association hidden before answering');
-d.getElementById('answer').value = 'il pane'; d.getElementById('submit').click();
+d.getElementById('answer').value = 'le pain'; d.getElementById('submit').click();
 ok(d.querySelector('.assoc-text')?.textContent === 'companion <shared bread>', 'association appears after answering');
 d.querySelector('.direction-toggle [data-dir="it-en"]').click();
-ev(`index = deck.findIndex(c => c.noun === 'pane'); render();`);
-ok(d.getElementById('prompt').textContent === 'il pane', 'IT→EN shows the Italian');
+ev(`index = deck.findIndex(c => c.noun === 'pain'); render();`);
+ok(d.getElementById('prompt').textContent === 'le pain', 'FR → EN shows the French');
 d.getElementById('answer').value = 'loaf'; d.getElementById('submit').click();
-ok(!!d.getElementById('override-btn'), 'IT→EN wrong answer offers "I was right"');
+ok(!!d.getElementById('override-btn'), 'FR → EN: a wrong answer offers "I was right"');
 d.getElementById('override-btn').click();
 ok(d.getElementById('feedback').className.includes('correct') && !!d.querySelector('.feedback-note') && d.querySelector('.assoc-text')?.textContent.includes('companion'), 'override keeps note and association');
-ok(!d.querySelector('.feedback .pron'), 'noun feedback has no pronunciation line');
 ok(errors.length === 0, 'no runtime errors');
-const store = { 'sostantivi-assoc-v1': w.localStorage.getItem('sostantivi-assoc-v1') };
+const store = { 'pioche-noms-assoc-v1': w.localStorage.getItem('pioche-noms-assoc-v1') };
 ({ w, d, ev, errors } = boot(store));
-ev("selectedNouns = new Set(['pane']); updateReadout();"); d.getElementById('start-btn').click();
-d.getElementById('answer').value = 'il pane'; d.getElementById('submit').click();
+ev("selectedNouns = new Set(['pain']); updateReadout();"); d.getElementById('start-btn').click();
+d.getElementById('answer').value = 'le pain'; d.getElementById('submit').click();
 ok(d.querySelector('.assoc-text')?.textContent === 'companion <shared bread>', 'association survives a reload');
-// ---- The shop (Oct 2026): 52 more nouns, and the food already in the deck filed there too ----
-const shop = ev("NOUN_THEMES.find(t => t.key === 'negozio').nouns");
-ok(['manzo', 'agnello', 'maiale', 'fagiolo', 'melone', 'arancia', 'cece'].every(k => shop.includes(k)) && shop.length === 142 && ev("NOUN_ITEMS.find(n => n.noun === 'maiale').en") === 'the pig (pork)',
-   `Negozio has beef, lamb, pork (il maiale), beans, melon, oranges and chickpeas — ${shop.length} nouns in all`);
-const SHOP_NEW = ['manzo', 'agnello', 'vitello', 'salsiccia', 'salame', 'pancetta', 'tacchino', 'tonno', 'salmone', 'gambero', 'cozza', 'merluzzo', 'bistecca', 'fagiolo', 'cece', 'lenticchia',
-  'pisello', 'carota', 'lattuga', 'spinaci', 'peperone', 'zucchina', 'melanzana', 'cetriolo', 'cavolo', 'broccolo', 'sedano', 'mais', 'verdura', 'oliva', 'basilico', 'prezzemolo', 'melone',
-  'fragola', 'pesca', 'pera', 'anguria', 'ananas', 'ciliegia', 'albicocca', 'lampone', 'noce', 'mandorla', 'yogurt', 'panna', 'mozzarella', 'parmigiano', 'farina', 'pepe', 'marmellata', 'maionese', 'senape'];
-const wrongArticle = ev(`${JSON.stringify(SHOP_NEW)}.map(k => NOUN_ITEMS.find(n => n.noun === k)).filter(n => {
-  const [art, word] = n.it.startsWith("l'") ? ["l'", n.it.slice(2)] : n.it.split(' ');
-  const plural = /^(i|gli|le)$/.test(art), vowel = /^[aeiouàèéìòù]/.test(word), special = /^(s[^aeiou]|z|gn|ps|x|y)/.test(word);
-  const want = n.g === 'f' ? (plural ? 'le' : vowel ? "l'" : 'la') : plural ? (vowel || special ? 'gli' : 'i') : (vowel ? "l'" : special ? 'lo' : 'il');
-  return art !== want;
-}).map(n => n.it)`);
-ok(wrongArticle.length === 0 && SHOP_NEW.every(k => ev(`NOUN_FREQUENCY_ORDER.includes(${JSON.stringify(k)})`) && ev(`NOUN_THEMES.find(t => t.key === 'cibo').nouns.includes(${JSON.stringify(k)})`)),
-   `the 52 new shop nouns: each article right for its gender and first letter (lo yogurt, l'ananas, gli spinaci), each ranked, each in Cibo too${wrongArticle.length ? ': ' + wrongArticle.join(', ') : ''}`);
-ok(['spinaci', 'melanzana', 'albicocca'].every(k => ev(`NOUN_THEMES.find(t => t.key === 'arabo').nouns.includes(${JSON.stringify(k)})`)), 'spinaci, melanzana and albicocca join the Arabic-origin words');
-// ---- Renovating the house (Oct 2026): 58 more nouns, and the house words already in the deck ----
-const reno = ev("NOUN_THEMES.find(t => t.key === 'ristrutturazione')");
-const RENO_NEW = ['trave', 'architrave', 'solaio', 'parete', 'tegola', 'coppo', 'grondaia', 'camino', 'gradino', 'infisso', 'persiana', 'davanzale', 'soffitta', 'fienile',
-  'calce', 'malta', 'intonaco', 'giunto', 'stilatura', 'mattone', 'cemento', 'ghiaia', 'legno', 'legna', 'tarlo', 'vespaio', 'massetto', 'impianto', 'presa', 'contatore', 'tubo',
-  'caldaia', 'stufa', 'scarico', 'bolletta', 'subentro', 'umidità', 'muffa', 'crepa', 'perdita', 'muratore', 'idraulico', 'elettricista', 'falegname', 'geometra', 'impresa',
-  'preventivo', 'permesso', 'pratica', 'catasto', 'planimetria', 'caparra', 'bonifico', 'sopralluogo', 'cantiere', 'ponteggio', 'imposta', 'dichiarazione'];
-const RENO_OLD = ['tetto', 'muro', 'finestra', 'porta', 'pietra', 'scala', 'pavimento', 'soffitto', 'cantina', 'sabbia', 'castagno', 'interruttore', 'rubinetto', 'fattura', 'comune'];
-ok(reno.label === 'Ristrutturazione' && reno.en === 'Renovation' && reno.nouns.length === 73 && RENO_NEW.length === 58
-   && [...RENO_NEW, ...RENO_OLD].every(k => reno.nouns.includes(k)) && new Set(reno.nouns).size === 73,
-   'Ristrutturazione (Renovation): 73 nouns — 58 new, and the 15 house words already in the deck (il tetto, la sabbia, il castagno…)');
-const renoWrongArticle = ev(`${JSON.stringify(RENO_NEW)}.map(k => NOUN_ITEMS.find(n => n.noun === k)).filter(n => {
-  const [art, word] = n.it.startsWith("l'") ? ["l'", n.it.slice(2)] : n.it.split(' ');
-  const vowel = /^[aeiouàèéìòù]/.test(word), special = /^(s[^aeiou]|z|gn|ps|x|y)/.test(word);
-  const want = n.g === 'f' ? (vowel ? "l'" : 'la') : (vowel ? "l'" : special ? 'lo' : 'il');
-  return art !== want;
-}).map(n => n.it)`);
-ok(renoWrongArticle.length === 0 && RENO_NEW.every(k => ev(`NOUN_FREQUENCY_ORDER.includes(${JSON.stringify(k)})`)),
-   `each new article right for its gender and first letter (lo scarico, l'architrave, l'umidità), each noun ranked${renoWrongArticle.length ? ': ' + renoWrongArticle.join(', ') : ''}`);
-const g = k => ev(`NOUN_ITEMS.find(n => n.noun === ${JSON.stringify(k)}).g`);
-ok(g('architrave') === 'm' && g('trave') === 'f' && g('geometra') === 'm' && g('umidità') === 'f' && g('legna') === 'f' && g('legno') === 'm',
-   'the genders that catch people out: la trave but l\'architrave (m), il geometra, l\'umidità (f); il legno, the wood, and la legna, the firewood');
-const rank = k => ev(`NOUN_FREQUENCY_ORDER.indexOf(${JSON.stringify(k)})`);
-ok(rank('impresa') < rank('preventivo') && rank('preventivo') < rank('vespaio') && rank('vespaio') < rank('stilatura') && rank('casa') < rank('impresa'),
-   'ranked by the same score as the rest: l\'impresa well up, il preventivo mid-deck, the trade words (il vespaio, la stilatura) at the end');
-ok(['muratore', 'idraulico', 'elettricista', 'falegname', 'geometra'].every(k => ev(`NOUN_THEMES.find(t => t.key === 'lavoro').nouns.includes(${JSON.stringify(k)})`))
-   && ['parete', 'camino', 'soffitta', 'caldaia', 'stufa'].every(k => ev(`NOUN_THEMES.find(t => t.key === 'casa').nouns.includes(${JSON.stringify(k)})`)),
-   'the trades join Lavoro, and the new parts of the house join Casa');
-({ w, d, ev, errors } = boot());
-ev("selectedNouns = new Set(['architrave', 'scarico']); updateReadout();"); d.getElementById('start-btn').click();
-ev("index = deck.findIndex(c => c.noun === 'architrave'); render();");
-ok(d.getElementById('prompt').textContent.trim() === 'the lintel', 'a card asks for the lintel…');
-d.getElementById('answer').value = "la architrave"; d.getElementById('submit').click();
-ok(d.getElementById('feedback').classList.contains('incorrect') && /l'architrave/.test(d.getElementById('feedback').textContent)
-   && /false friend/i.test(d.getElementById('feedback').textContent), "…the article matters (l'architrave), and the note flags the false friend");
 done();

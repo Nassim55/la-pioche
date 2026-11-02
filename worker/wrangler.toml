@@ -1,14 +1,14 @@
-# Il Mazzo sync API. Deployed by GitHub Actions (.github/workflows/tests.yml) once the
+# La Pioche sync API. Deployed by GitHub Actions (.github/workflows/tests.yml) once the
 # repository has the CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID and ALLOWED_EMAILS
 # secrets and the D1_DATABASE_ID and GOOGLE_CLIENT_ID variables; the deploy step writes
 # the two IDs in place of the placeholders and sets ALLOWED_EMAILS as a Worker secret.
-name = "il-mazzo-sync"
+name = "la-pioche-sync"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "il-mazzo"
+database_name = "la-pioche"
 database_id = "D1_DATABASE_ID_PLACEHOLDER"
 migrations_dir = "migrations"
 

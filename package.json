@@ -1,8 +1,8 @@
 {
-  "name": "il-mazzo",
+  "name": "la-pioche",
   "version": "1.0.0",
   "private": true,
-  "description": "Il Mazzo — Italian flashcards (nouns, verbs, adjectives, everyday phrases) in a single HTML file",
+  "description": "La Pioche — French flashcards (nouns, for now) in a single HTML file",
   "scripts": {
     "test": "node tests/run-all.js"
   },

@@ -1,4 +1,4 @@
-// Il Mazzo sync API — a Cloudflare Worker with a D1 database.
+// La Pioche sync API — a Cloudflare Worker with a D1 database.
 //
 // The app does all the merging (see "Sync, part 1" in index.html); this server keeps
 // the latest agreed copy of each progress store and a version number for the whole
@@ -15,7 +15,7 @@
 // hash is stored. Each Google account has its own space.
 //
 //   GET    /v1/config     → { googleClientId }
-//   POST   /v1/session    ← { credential, legacyKey? } → { token, email, expiresAt }
+//   POST   /v1/session    ← { credential } → { token, email, expiresAt }
 //   DELETE /v1/session    → sign this device out
 //   GET    /v1/progress   → { version, items: { key: { v, e } } }
 //   PUT    /v1/progress   ← { baseVersion, items: { key: { v, e } } } → { version }
@@ -139,24 +139,6 @@ async function signIn(request, env) {
     db.prepare('INSERT OR IGNORE INTO spaces (id, version, created_at, updated_at) VALUES (?, 0, ?, ?)').bind(spaceId, now, now),
     db.prepare('INSERT INTO sessions (token_hash, space_id, email, created_at, expires_at) VALUES (?, ?, ?, ?, ?)').bind(await sha256(token), spaceId, claims.email, now, expiresAt)
   ]);
-  // A one-time move from the old built-in key: its progress comes across if this
-  // account has none yet, and then its server copy is deleted
-  const legacyKey = body && body.legacyKey;
-  if (typeof legacyKey === 'string' && TOKEN_RE.test(legacyKey)) {
-    const legacyId = await sha256(legacyKey);
-    const legacy = legacyId !== spaceId && await db.prepare('SELECT version FROM spaces WHERE id = ?').bind(legacyId).first();
-    if (legacy) {
-      const mine = await db.prepare('SELECT COUNT(*) AS n FROM items WHERE space_id = ?').bind(spaceId).first();
-      const statements = [];
-      if (!mine.n) {
-        statements.push(db.prepare('INSERT INTO items (space_id, key, value, epoch, updated_at) SELECT ?, key, value, epoch, ? FROM items WHERE space_id = ?').bind(spaceId, now, legacyId));
-        statements.push(db.prepare('UPDATE spaces SET version = version + 1, updated_at = ? WHERE id = ?').bind(now, spaceId));
-      }
-      statements.push(db.prepare('DELETE FROM items WHERE space_id = ?').bind(legacyId));
-      statements.push(db.prepare('DELETE FROM spaces WHERE id = ?').bind(legacyId));
-      await db.batch(statements);
-    }
-  }
   return json(request, 200, { token, email: claims.email, expiresAt });
 }
 

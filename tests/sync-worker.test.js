@@ -17,7 +17,7 @@ const { makeGoogle, CLIENT_ID, ME } = require('./google-fixture');
     const h = { Origin: origin };
     if (auth) h.Authorization = `Bearer ${auth}`;
     if (body !== undefined) h['Content-Type'] = 'application/json';
-    const res = await worker.fetch(new Request(`https://il-mazzo-sync.il-mazzo.workers.dev${p}`, { method, headers: h, body: body === undefined ? undefined : (typeof body === 'string' ? body : JSON.stringify(body)) }), e);
+    const res = await worker.fetch(new Request(`https://la-pioche-sync.example.workers.dev${p}`, { method, headers: h, body: body === undefined ? undefined : (typeof body === 'string' ? body : JSON.stringify(body)) }), e);
     let data = null;
     try { data = await res.json(); } catch (err) { /* empty */ }
     return { status: res.status, data, headers: res.headers };
@@ -34,7 +34,6 @@ const { makeGoogle, CLIENT_ID, ME } = require('./google-fixture');
   ok(r.status === 200 && r.data.googleClientId === CLIENT_ID, "the app can ask which Google client to sign in with");
 
   // ---- Every way a sign-in can be wrong ----
-  const LEGACY = 'lRdadfl9fkeJDf3Jz5LUlmAhwmSFphz6';
   const bad = {
     'signed by an impostor': [{}, { impostor: true }], 'unsigned (alg none)': [{}, { unsigned: true, alg: 'none' }],
     'an unknown signing key': [{}, { kid: 'kid-404' }], 'issued for another app': [{ aud: 'someone-else.apps.googleusercontent.com' }],
@@ -50,7 +49,6 @@ const { makeGoogle, CLIENT_ID, ME } = require('./google-fixture');
   ok((await signIn({}, {}, {})).status === 200 && (await call('POST', '/v1/session', { body: { credential: await google.token() }, e: { ...env, ALLOWED_EMAILS: '' } })).status === 403,
      'with no allow-list set, nobody can sign in');
   ok(raw.prepare('SELECT COUNT(*) AS n FROM sessions').get().n === 1, '(only the allowed sign-in made a session)');
-  ok((await call('GET', '/v1/progress', { auth: LEGACY })).status === 401, 'the old built-in key no longer opens anything');
 
   // ---- Signing in ----
   r = await signIn();
@@ -62,18 +60,18 @@ const { makeGoogle, CLIENT_ID, ME } = require('./google-fixture');
   ok((await call('GET', '/v1/progress')).status === 401 && (await call('GET', '/v1/progress', { auth: 'x'.repeat(43) })).status === 401, 'no session, or a made-up one: refused');
 
   // ---- Saving and fetching ----
-  r = await call('PUT', '/v1/progress', { auth: T1, body: { baseVersion: 0, items: { 'sostantivi-stats-v1': { v: { casa: { seen: 4, wrong: 1 } }, e: 0 }, 'frasi-stats-v1': { v: null, e: 1 } } } });
+  r = await call('PUT', '/v1/progress', { auth: T1, body: { baseVersion: 0, items: { 'pioche-noms-stats-v1': { v: { maison: { seen: 4, wrong: 1 } }, e: 0 }, 'pioche-noms-assoc-v1': { v: null, e: 1 } } } });
   ok(r.status === 200 && r.data.version === 1, 'a save based on the current version is accepted');
   const T2 = (await signIn()).data.token;
   r = await call('GET', '/v1/progress', { auth: T2 });
-  ok(r.data.items['sostantivi-stats-v1'].v.casa.seen === 4 && r.data.items['frasi-stats-v1'].v === null && r.data.items['frasi-stats-v1'].e === 1, 'signing in on another device opens the same progress');
-  r = await call('PUT', '/v1/progress', { auth: T2, body: { baseVersion: 0, items: { 'sostantivi-stats-v1': { v: { casa: { seen: 99, wrong: 0 } }, e: 0 } } } });
+  ok(r.data.items['pioche-noms-stats-v1'].v.maison.seen === 4 && r.data.items['pioche-noms-assoc-v1'].v === null && r.data.items['pioche-noms-assoc-v1'].e === 1, 'signing in on another device opens the same progress');
+  r = await call('PUT', '/v1/progress', { auth: T2, body: { baseVersion: 0, items: { 'pioche-noms-stats-v1': { v: { maison: { seen: 99, wrong: 0 } }, e: 0 } } } });
   ok(r.status === 409 && r.data.version === 1, 'a save based on an out-of-date version is refused, and changes nothing');
   env.DB.hooks.beforeBatch = db => db.prepare('UPDATE spaces SET version = version + 1').run();
-  r = await call('PUT', '/v1/progress', { auth: T2, body: { baseVersion: 1, items: { 'sostantivi-stats-v1': { v: { casa: { seen: 77, wrong: 0 } }, e: 0 } } } });
-  ok(r.status === 409 && (await call('GET', '/v1/progress', { auth: T1 })).data.items['sostantivi-stats-v1'].v.casa.seen === 4, 'two saves at the same instant: the second writes nothing and is told to merge again');
+  r = await call('PUT', '/v1/progress', { auth: T2, body: { baseVersion: 1, items: { 'pioche-noms-stats-v1': { v: { maison: { seen: 77, wrong: 0 } }, e: 0 } } } });
+  ok(r.status === 409 && (await call('GET', '/v1/progress', { auth: T1 })).data.items['pioche-noms-stats-v1'].v.maison.seen === 4, 'two saves at the same instant: the second writes nothing and is told to merge again');
   const statuses = [];
-  for (const b of [{ baseVersion: 2, items: { 'Bad Key!': { v: {}, e: 0 } } }, { baseVersion: 2, items: { 'sostantivi-stats-v1': { v: [1], e: 0 } } }, { items: {} }, 'not json']) statuses.push((await call('PUT', '/v1/progress', { auth: T1, body: b })).status);
+  for (const b of [{ baseVersion: 2, items: { 'Bad Key!': { v: {}, e: 0 } } }, { baseVersion: 2, items: { 'pioche-noms-stats-v1': { v: [1], e: 0 } } }, { items: {} }, 'not json']) statuses.push((await call('PUT', '/v1/progress', { auth: T1, body: b })).status);
   ok(statuses.every(s => s === 400) && (await call('PUT', '/v1/progress', { auth: T1, body: { baseVersion: 2, items: { x: { v: { s: 'a'.repeat(1_600_000) }, e: 0 } } } })).status === 413, 'malformed and oversized saves are refused');
 
   // ---- Sessions end ----
@@ -88,15 +86,7 @@ const { makeGoogle, CLIENT_ID, ME } = require('./google-fixture');
   ok(JSON.stringify((await call('GET', '/v1/progress', { auth: T3, e: env2 })).data.items) === '{}', "another allowed account has its own space, and can't see yours");
   const T4 = (await signIn()).data.token;
   ok((await call('DELETE', '/v1/space', { auth: T4 })).status === 200 && (await call('GET', '/v1/progress', { auth: T4 })).status === 401
-     && raw.prepare("SELECT COUNT(*) AS n FROM items WHERE value LIKE '%casa%'").get().n === 0, 'deleting an account\'s space removes its progress and signs it out everywhere');
+     && raw.prepare("SELECT COUNT(*) AS n FROM items WHERE value LIKE '%maison%'").get().n === 0, 'deleting an account\'s space removes its progress and signs it out everywhere');
 
-  // ---- The one-time move from the old built-in key ----
-  const legacyId = require('crypto').createHash('sha256').update(LEGACY).digest('hex');
-  raw.prepare('INSERT INTO spaces (id, version, created_at, updated_at) VALUES (?, 5, 1, 1)').run(legacyId);
-  raw.prepare('INSERT INTO items (space_id, key, value, epoch, updated_at) VALUES (?, ?, ?, 0, 1)').run(legacyId, 'sostantivi-stats-v1', JSON.stringify({ sole: { seen: 5, wrong: 0 } }));
-  const T5 = (await signIn({}, {}, { legacyKey: LEGACY })).data.token;
-  r = await call('GET', '/v1/progress', { auth: T5 });
-  ok(r.data.items['sostantivi-stats-v1'].v.sole.seen === 5 && !raw.prepare('SELECT 1 FROM spaces WHERE id = ?').get(legacyId), "the first sign-in brings the old built-in key's progress across, then deletes that copy");
-  ok((await signIn({}, {}, { legacyKey: LEGACY })).status === 200, 'later sign-ins with the old key are harmless');
   done();
 })().catch(e => { console.error(e); process.exit(1); });

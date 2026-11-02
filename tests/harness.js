@@ -17,7 +17,6 @@ function boot(storage = {}, setup = null) {
   const warns = [], errors = [];
   const dom = new JSDOM(fs.readFileSync(FILE, 'utf8'), { runScripts: 'dangerously', url: 'http://localhost/index.html', pretendToBeVisual: true, virtualConsole: quietConsole(),
     beforeParse(w) { for (const [k, v] of Object.entries(storage)) w.localStorage.setItem(k, v);
-                     w.MAZZO_INFINITIVE_FIRST = false;   // conjugation rounds without the infinitive card, unless a test's setup turns it on
                      w.console.warn = (...a) => warns.push(a.join(' ')); w.addEventListener('error', e => errors.push(e.message)); if (setup) setup(w); } });
   const w = dom.window, d = w.document;
   return { w, d, warns, errors, ev: s => w.eval(s),
